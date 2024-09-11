@@ -5,7 +5,7 @@ const app = express();
 
 // Criação de rota
 app.get("/", (req, res) => {
-    res.send("Bem vindo ao Curso de Node.js")
+    res.send("Bem vindo ao Curso de Node.js - tsc-watch")
 })
 
 // Criação do servidor com Express
