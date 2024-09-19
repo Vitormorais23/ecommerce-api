@@ -10,8 +10,16 @@ let usuarios: User[] = []
 
 export class UsersController {
     // retorna lista de todos usuários
-    static gatAll(req: Request, res: Response) {
-        res.send(usuarios)
+    static async gatAll(req: Request, res: Response) {
+        const snapshot = await getFirestore().collection("users").get()
+        const users = snapshot.docs.map(doc => {
+
+            return {
+                id: doc.id,
+                ...doc.data()
+            }
+        })
+        res.send(users)
     }
 
     // comparar para encontrar id do usuario
