@@ -22,17 +22,21 @@ export class UsersController {
         res.send(users)
     }
 
-    // comparar para encontrar id do usuario
-    static getById(req: Request, res: Response) {
-        let userId = Number(req.params.id)
-        let user = usuarios.find(user => user.id === userId)
+    // pegar id do usuario
+    static async getById(req: Request, res: Response) {
+        let userId = req.params.id
+        const doc = await getFirestore().collection("users").doc(userId).get()
+        let user = {
+            id: doc.id,
+            ...doc.data()
+        }
         res.send(user)
     }
 
     // cadastrar usuario
     static async save(req: Request, res: Response) {
         let user = req.body;
-        const userSalvo = await getFirestore().collection("users").add(user)
+        const userSalvo = await getFirestore().collection("users").add(user) // O add retorna uma Promise, sendo assim se usa o await se usar await tem q colocar o async
         res.send({
             message: `Usuário ${userSalvo.id} criado com sucesso`
         })
